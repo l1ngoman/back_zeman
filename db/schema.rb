@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_09_062144) do
+ActiveRecord::Schema.define(version: 2019_04_09_212508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,20 @@ ActiveRecord::Schema.define(version: 2019_04_09_062144) do
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_customer_accounts_on_customer_id"
     t.index ["vendor_id"], name: "index_customer_accounts_on_vendor_id"
+  end
+
+  create_table "customer_contacts", force: :cascade do |t|
+    t.bigint "customer_id"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "role"
+    t.string "phone"
+    t.string "email"
+    t.text "notes"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_customer_contacts_on_customer_id"
   end
 
   create_table "customer_locations", force: :cascade do |t|
@@ -146,16 +160,14 @@ ActiveRecord::Schema.define(version: 2019_04_09_062144) do
 
   create_table "vendor_locations", force: :cascade do |t|
     t.bigint "vendor_id"
-    t.string "address_1"
-    t.string "address_2"
     t.string "city"
     t.string "state"
-    t.string "zip"
     t.string "country"
     t.text "notes"
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "primary"
     t.index ["vendor_id"], name: "index_vendor_locations_on_vendor_id"
   end
 
@@ -163,9 +175,6 @@ ActiveRecord::Schema.define(version: 2019_04_09_062144) do
     t.string "name"
     t.string "phone"
     t.string "website"
-    t.string "city"
-    t.string "state"
-    t.string "country"
     t.string "hours"
     t.text "notes"
     t.boolean "active"
@@ -175,6 +184,7 @@ ActiveRecord::Schema.define(version: 2019_04_09_062144) do
 
   add_foreign_key "customer_accounts", "customers"
   add_foreign_key "customer_accounts", "vendors"
+  add_foreign_key "customer_contacts", "customers"
   add_foreign_key "customer_locations", "customers"
   add_foreign_key "items", "vendors"
   add_foreign_key "order_items", "orders"

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :customer_contacts
   resources :order_items
   resources :orders
   resources :prices
@@ -6,6 +7,7 @@ Rails.application.routes.draw do
   resources :customer_locations
   resources :customer_accounts
   resources :customers
+      get '/customer_list/new_from_spreadsheet', to: 'customers#create_from_spreadsheet'
   resources :vendor_locations
   resources :vendor_contacts
   resources :vendors

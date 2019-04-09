@@ -10,7 +10,9 @@ class CustomerAccountsController < ApplicationController
 
   # GET /customer_accounts/1
   def show
-    render json: @customer_account
+    @customer_account_info = []
+    @customer_account_info << {account: @customer_account, customer: @customer_account.customer, vendor: @customer_account.vendor}
+    render json: @customer_account_info
   end
 
   # POST /customer_accounts

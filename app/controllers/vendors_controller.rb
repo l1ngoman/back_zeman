@@ -6,15 +6,33 @@ class VendorsController < ApplicationController
     @vendors = Vendor.all.order(name: :asc)
     @all_vendors = []
     @vendors.each do | vendor |
-      @all_vendors << {vendor: vendor, locations: vendor.vendor_locations, contacts: vendor.vendor_contacts}
+      @all_vendors << {vendor: vendor, locations: vendor.vendor_locations.where(active:true,primary:true), contacts: vendor.vendor_contacts}
     end    
     render json: @all_vendors
   end
 
   # GET /vendors/1
   def show
+    @vendor_info = []
+    @customer_accounts = []
+    @vendor.customer_accounts.each do | acct |
+      @customer_accounts << {
+        id: acct.id,
+        customer_id: acct.customer_id,
+        account_number: acct.account_number, 
+        customer_name: acct.customer.name, 
+        phone_1: acct.customer.phone_1,
+        phone_2: acct.customer.phone_2,
+      }
+    end
 
-    render json: @vendor
+    @vendor_info << {
+      vendor: @vendor, 
+      locations: @vendor.vendor_locations, 
+      contacts: @vendor.vendor_contacts, 
+      accounts: @customer_accounts
+    }
+    render json: @vendor_info
   end
 
   # POST /vendors
