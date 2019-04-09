@@ -5,12 +5,14 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
+
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*'
+    origins '*' # <- We change this to allow requests from anyone
 
     resource '*',
       headers: :any,
+      expose: :authorization, # <- Add this line to expose our auth header
       methods: [:get, :post, :put, :patch, :delete, :options, :head]
   end
 end
